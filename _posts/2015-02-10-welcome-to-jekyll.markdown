@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "hello jekyll!"
+title:  "Hello Blog"
 date:   2017-03-25 15:14:54
 categories: 3D
 ---
