@@ -1,0 +1,18 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\CCActionManager.cs">
+    <Files>
+      <File FileName="Assets\Scripts\SSAction.cs" Line="12" Column="49" />
+      <File FileName="Assets\Scripts\CCGetOnShip.cs" Line="5" Column="1" />
+      <File FileName="Assets\Scripts\CCShipMove.cs" Line="10" Column="65" />
+      <File FileName="Assets\Scripts\CCGetOffShip.cs" Line="10" Column="69" />
+      <File FileName="Assets\Scripts\ISSActionCallback.cs" Line="9" Column="59" />
+      <File FileName="Assets\Scripts\SSActionManager.cs" Line="18" Column="13" />
+      <File FileName="Assets\Scripts\CCActionManager.cs" Line="9" Column="29" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
