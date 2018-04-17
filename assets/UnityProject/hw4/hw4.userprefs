@@ -1,14 +1,9 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\FirstController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\MyComponent\Scripts\MyEditor.cs">
     <Files>
-      <File FileName="Assets\Scripts\DiskFactory.cs" Line="37" Column="4" />
-      <File FileName="Assets\Scripts\CCBreak.cs" Line="42" Column="37" />
-      <File FileName="Assets\Scripts\CCEmit.cs" Line="44" Column="36" />
-      <File FileName="Assets\Scripts\CCActionManager.cs" Line="31" Column="1" />
-      <File FileName="Assets\Scripts\FirstController.cs" Line="43" Column="17" />
-      <File FileName="Assets\Scripts\UserGUI.cs" Line="21" Column="1" />
-      <File FileName="Assets\Scripts\IUserAction.cs" Line="10" Column="1" />
+      <File FileName="Assets\MyComponent\Scripts\Disk.cs" Line="1" Column="1" />
+      <File FileName="Assets\MyComponent\Scripts\MyEditor.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
