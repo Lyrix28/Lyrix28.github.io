@@ -1,0 +1,15 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Shooting\CCShootingActionManager.cs">
+    <Files>
+      <File FileName="Assets\Scripts\Shooting\ShootingController.cs" Line="6" Column="81" />
+      <File FileName="Assets\Scripts\Shooting\ShootingUserGUI.cs" Line="24" Column="3" />
+      <File FileName="Assets\Scripts\Shooting\CCShootingActionManager.cs" Line="8" Column="32" />
+      <File FileName="Assets\Scripts\Shooting\CCArrowEmit.cs" Line="14" Column="49" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
