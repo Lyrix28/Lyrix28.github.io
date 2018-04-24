@@ -10,7 +10,7 @@ public class ShootingController : MonoBehaviour, ISceneController, IUserAction {
 	public Vector3 wind;
 	public GameObject arrow;
 	public GameObject head;
-	public GameObject wflag;
+
 	public bool flag = false;
 
 	private bool flag2 = false;
@@ -40,9 +40,9 @@ public class ShootingController : MonoBehaviour, ISceneController, IUserAction {
 		}
 
 		arrow = GameObject.Instantiate<GameObject> (Resources.Load<GameObject> ("Prefabs/arrow"));
+		arrow.SetActive (false);
 		head = arrow.GetComponentsInChildren<Transform> () [4].gameObject;
 
-		wflag = GameObject.Instantiate<GameObject> (Resources.Load<GameObject> ("Prefabs/flag"));
 	}
 
 	void OnGUI() {
@@ -50,9 +50,8 @@ public class ShootingController : MonoBehaviour, ISceneController, IUserAction {
 		GUI.color = Color.green;
 		GUI.Label (new Rect (750, 0, 60, 50), "Count: "+count.ToString());
 		GUI.Label (new Rect (750, 50, 60, 50), "Score: "+score.ToString());
-		GUI.Label (new Rect (750, 100, 60, 50), "Wind: "+wind.ToString());
+		GUI.Label (new Rect (400, 0, 200, 50), "Wind: "+wind.ToString());
 
-		wflag.transform.LookAt (wind);
 	}
 
 	void Update() {

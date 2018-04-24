@@ -56,6 +56,7 @@
      <Compile Include="Assets\Scripts\IUserAction.cs" />
      <Compile Include="Assets\Scripts\Shooting\ArrowCollider.cs" />
      <Compile Include="Assets\Scripts\Shooting\CCArrowEmit.cs" />
+     <Compile Include="Assets\Scripts\Shooting\CCArrowTremble.cs" />
      <Compile Include="Assets\Scripts\Shooting\CCShootingActionManager.cs" />
      <Compile Include="Assets\Scripts\Shooting\ShootingController.cs" />
      <Compile Include="Assets\Scripts\Shooting\ShootingUserGUI.cs" />

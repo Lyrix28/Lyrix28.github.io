@@ -21,7 +21,7 @@ public class ShootingUserGUI : MonoBehaviour {
 			}
 		}*/
 
-		if (GUI.Button (new Rect (0, 50, 100, 50), "Restart")) {
+		if (GUI.Button (new Rect (0, 0, 100, 50), "Restart")) {
 			action.Restart ();
 		}
 

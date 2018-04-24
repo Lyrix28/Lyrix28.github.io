@@ -14,6 +14,7 @@ public class CCArrowEmit: SSAction
 	{
 		sceneController = (ShootingController)SSDirector.Instance.currentSceneController;
 		var d = Camera.main.ScreenPointToRay (Input.mousePosition).direction;
+		gameobject.SetActive (true);
 		sceneController.head.SetActive (true);
 		transform.position = new Vector3(d.x,d.y+1,0);
 		transform.rotation = Quaternion.Euler(90,0,0);
@@ -32,12 +33,14 @@ public class CCArrowEmit: SSAction
 			if (transform.position.z > 8) {
 				transform.position = Vector3.up;
 				sceneController.head.SetActive (false);
+				gameobject.SetActive (false);
+				this.callback.SSActionEvent (this);
 			}
 		} else {
 			var rig = gameobject.GetComponent<Rigidbody>() as Rigidbody;
 			rig.isKinematic = true;
 			this.destroy = true;
-			this.callback.SSActionEvent (this);
+			this.callback.SSActionEvent (this,objectParam:gameobject);
 		}
 
 	}

@@ -9,12 +9,6 @@ public class ArrowCollider : MonoBehaviour
 	{
 		sceneController = SSDirector.Instance.currentSceneController as ShootingController;
 	}
-	
-	// Update is called once per frame
-	void Update ()
-	{
-	
-	}
 
 	void OnTriggerEnter(Collider c) {  
 		gameObject.transform.parent.transform.GetComponent<Rigidbody>().isKinematic = true;  

@@ -1,12 +1,11 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Shooting\ShootingController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Shooting\CCArrowTremble.cs">
     <Files>
-      <File FileName="Assets\Scripts\Shooting\ShootingController.cs" Line="55" Column="31" />
-      <File FileName="Assets\Scripts\Shooting\ShootingUserGUI.cs" Line="25" Column="1" />
-      <File FileName="Assets\Scripts\Shooting\CCShootingActionManager.cs" Line="20" Column="42" />
-      <File FileName="Assets\Scripts\Shooting\CCArrowEmit.cs" Line="20" Column="63" />
-      <File FileName="Assets\Scripts\Shooting\ArrowCollider.cs" Line="20" Column="1" />
+      <File FileName="Assets\Scripts\Shooting\CCArrowEmit.cs" Line="42" Column="24" />
+      <File FileName="Assets\Scripts\Shooting\CCShootingActionManager.cs" Line="30" Column="32" />
+      <File FileName="Assets\Scripts\Shooting\CCArrowTremble.cs" Line="4" Column="28" />
+      <File FileName="Assets\Scripts\Shooting\ShootingController.cs" Line="43" Column="25" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

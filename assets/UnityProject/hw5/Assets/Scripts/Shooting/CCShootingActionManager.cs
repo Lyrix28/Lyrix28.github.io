@@ -6,6 +6,7 @@ public class CCShootingActionManager : SSActionManager, ISSActionCallback
 	public ShootingController sceneController;
 
 	private CCArrowEmit arrowEmit;
+	private CCArrowTremble arrowTremble;
 
 	private bool flag = false;
 
@@ -13,7 +14,13 @@ public class CCShootingActionManager : SSActionManager, ISSActionCallback
 		SSActionEventType events = SSActionEventType.Competeted,
 		int intParam = 0,
 		string strParam = null,
-		System.Object objectParam = null) {}
+		System.Object objectParam = null) {
+		if(objectParam != null)
+		{
+			arrowTremble = CCArrowTremble.GetSSAction();
+			this.RunAction(objectParam as GameObject, arrowTremble, this);
+		}
+	}
 
 	void Start () {
 		sceneController = SSDirector.Instance.currentSceneController as ShootingController;
@@ -22,20 +29,9 @@ public class CCShootingActionManager : SSActionManager, ISSActionCallback
 
 	protected new void Update () {
 
-
-
 		if (Input.GetMouseButtonDown(0))
 			flag = true;
 		else if (Input.GetMouseButtonUp(0) && flag) {
-			/*Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-			RaycastHit hitInfo;
-
-			if(Physics.Raycast(ray,out hitInfo))
-			{
-				GameObject gameObj = hitInfo.collider.gameObject;
-				arrowEmit = CCArrowEmit.GetSSAction();  
-				this.RunAction(gameObj, arrowEmit, this);  
-			}*/
 			sceneController.count++;
 			arrowEmit = CCArrowEmit.GetSSAction();
 			this.RunAction (sceneController.arrow, arrowEmit, this);
