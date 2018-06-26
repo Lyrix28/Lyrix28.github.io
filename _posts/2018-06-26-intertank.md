@@ -19,7 +19,7 @@ excerpt: internet
 
 ### Pre
 
-> 导入[tanks-tutorial](https://unity3d.com/cn/learn/tutorials/s/tanks-tutorial)，打开_Complete-Game场景
+> 导入 [tanks-tutorial](https://unity3d.com/cn/learn/tutorials/s/tanks-tutorial) ，打开 _Complete-Game 场景
 
 ---
 
