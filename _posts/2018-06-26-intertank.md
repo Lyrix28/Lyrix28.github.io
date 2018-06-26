@@ -9,130 +9,216 @@ excerpt: internet
 * content
 {:toc}
 
-## 坦克对战游戏 AI 设计
+## 从[这里](https://pmlpml.github.io/unity3d-learning/13-Multiplayer-and-Networking)开始设置多人游戏
 
-### 游戏内容
+* [项目地址](https://github.com/Lyrix28/Lyrix28.github.io/tree/master/assets/UnityProject/intertank)
 
-* 整个游戏基于[tanks-tutorial](https://unity3d.com/cn/learn/tutorials/s/tanks-tutorial) 中的_Complete-Game场景，通过对场景中一些脚本的更改，实现AI效果
-
-> 玩家控制蓝色坦克（WSAD，空格），与红色坦克（AI）solo
-
-> 游戏分为round，在各round中，玩家发射炮弹攻击对方，活到最后的坦克获胜
-
-> 先赢够5个round的玩家获得游戏胜利
-
-* [项目地址](https://github.com/Lyrix28/Lyrix28.github.io/tree/master/assets/UnityProject/aitank)
-
-![Image text](https://raw.githubusercontent.com/Lyrix28/Lyrix28.github.io/master/assets/Pictures/aitank.gif)
-
-### AI坦克特性
-
-> 使用了“感知-思考-行为”模型
-
-> 可以避过障碍物寻路
-
-> 通过射线探测对方是否在炮弹路径上
-
-> 不会失去目标
-
-### NavMesh
-
-> Unity中的寻路系统
-
-> 首先打开 菜单 Windows -> Navgation
-
-> 将CompleteLevelArt下除Ground外全部设置为Not walkable
-
-> 然后烘培（Bake）
-
-> 为AI坦克添加NavMeshAgent组件
+![Image text](https://raw.githubusercontent.com/Lyrix28/Lyrix28.github.io/master/assets/Pictures/intertank.gif)
 
 ---
 
-### _Completed-Assets\Scripts\Managers\GameManager.cs
+### Pre
 
-> 在每Round初始化时，会调用ResetAllTanks函数
+> 导入[tanks-tutorial](https://unity3d.com/cn/learn/tutorials/s/tanks-tutorial)，打开_Complete-Game场景
+
+---
+
+### 玩家对象联网运动
+
+1. NetworkManager 设置
+
+第一步是在项目中创建 NetworkManager 对象：
+
+* 从菜单 Game Object -> Create Empty 添加一个新的空游戏对象。
+* 在层次结构视图中选择它。
+* 将对象重命名为“NetworkManager”，使用右键上下文菜单中或单击对象的名称并键入。
+* 在对象的检查器窗口中，单击添加组件按钮
+* 找到组件 Network -> NetworkManager 并将其添加到对象。该组件管理游戏的网络状态。
+* 找到组件 Network -> NetworkManagerHUD 并将其添加到对象。该组件在您的游戏中提供了一个简单的用户界面来控制网络状态。
+
+2. 设置玩家对象预制
+
+下一步是设置代表游戏中玩家对象的 Unity Prefab。默认情况下，NetworkManager 通过克隆玩家预制来为 Client 实例化玩家对象。这里，玩家预制为CompleteTank
+
+* 选择 _Completed-Assets\Prefabs\CompleteTank 预制
+* 在对象的检查器窗口中，单击添加组件按钮
+* 将组件 Network -> NetworkIdentity 添加到对象。该组件用于标识服务器和客户端之间的对象。
+* 将 NetworkIdentity 上的 “Local Player Authority” 复选框设置为 true。这将允许客户端控制玩家对象的移动
+
+3. 注册玩家预制
+
+一旦玩家预制被创建，它就必须在网络系统上注册。
+
+* 在层次视图中找到 NetworkManager 对象并选择它
+* 在 NetworkManager 组件面板打开 “Spawn Info” 折叠
+* 找到 “Player Prefab” 插槽（可以拖入对象的属性）
+* 将 CompleteTank 预制件拖入 “Player Prefab” 插槽
+
+4. 玩家对象运动（单人版）
+
+5. 测试主机（hosted）游戏
+
+6. 测试玩家对客户的移动
+
+7. 联网玩家对象的运动
+
+* 打开 _Completed-Assets\Scripts\Tank\TankMovement 脚本
+* 添加 “using UnityEngine.Networking”
+* 将 “MonoBehaviour” 更改为 “NetworkBehaviour”
+* 在Update函数中添加一个 “isLocalPlayer” 检测，以便只有本地程序处理输入
+* 在资源视图中找到 CompleteTank 预制并选择
+* 单击 “Add Component” 按钮并添加 Networking -> NetworkTransform 组件。该组件使对象在网络中同步它的位置。
+
+8. 测试多人游戏
+
+9. 识别本地玩家对象
+
+为了识别玩家，我们将使本地玩家的坦克变红。
+
+* 打开 _Completed-Assets\Scripts\Tank\TankMovement 脚本
+* 添加 OnStartLocalPlayer 函数的实现来更改运行期间玩家对象的颜色。
 
 {% highlight C# linenos %}
-private void ResetAllTanks()
+public override void OnStartLocalPlayer() {
+	// Get all of the renderers of the tank.
+	MeshRenderer[] renderers = gameObject.GetComponentsInChildren<MeshRenderer> ();
+
+	// Go through all the renderers...
+	for (int i = 0; i < renderers.Length; i++)
+	{
+		// ... set their material color to the color specific to this tank.
+		renderers[i].material.color = Color.red;
+	}
+}
+{% endhighlight %}
+
+---
+
+### 联网相互射击
+
+1. 射击子弹（未联网）
+
+> 受重力影响
+
+2. 联网射击子弹
+
+* 选择 _Completed-Assets\Prefabs\CompleteShell 预制
+* 在对象的检查器窗口中，单击添加组件按钮
+* 将 NetworkIdentity, NetworkTransform 添加到项目符号预制
+* 在子弹预制的 NetworkTransform 组件上将发送速率设置为零。子弹在射击后不会改变方向或速度，因此不需要发送移动更新。
+
+> CompleteTank 和 CompleteShell 预制 NetworkTransform 组件 Transform Syns Mod 的都为 Sync Rigidbody 3D
+
+* 选择 NetworkManager 并打开 “Spawn Info” 折叠
+* 用 Add 按钮添加一个新的 spawn 预制件
+* 将 CompleteShell 预制件拖入新的 spawn 预制插槽
+* 打开 _Completed-Assets\Scripts\Tank\TankShooting 脚本
+* 通过添加 [Command] 自定义属性和“Cmd”前缀，将Fire功能更改为联网命令
+* 在子弹对象上使用Network.Spawn（）
+
+{% highlight C# linenos %}
+[Command]
+private void CmdFire ()
 {
-    for (int i = 0; i < m_Tanks.Length; i++)
-    {
-		if (i == 1) {
-			// 将用户控制取消
-			m_Tanks [i].m_Instance.GetComponent<Complete.TankMovement> ().enabled = false;
-			m_Tanks [i].m_Instance.GetComponent<Complete.TankShooting> ().enabled = false;
-			// Alli时AI控制脚本
-			m_Tanks [i].m_Instance.GetComponent<Alli> ().target = m_Tanks [i-1].m_Instance.transform;
-		} else {
-			// 玩家的坦克
-			m_Tanks [i].m_Instance.GetComponent<Alli> ().enabled = false;
-			m_Tanks [i].m_Instance.GetComponent<NavMeshAgent> ().enabled = false;
-		}
-				
-        m_Tanks[i].Reset();
-    }
+    // Set the fired flag so only Fire is only called once.
+    m_Fired = true;
+
+    // Create an instance of the shell and store a reference to it's rigidbody.
+    Rigidbody shellInstance = Instantiate (m_Shell, m_FireTransform.position, m_FireTransform.rotation) as Rigidbody;
+
+    // Set the shell's velocity to the launch force in the fire position's forward direction.
+    shellInstance.velocity = m_CurrentLaunchForce * m_FireTransform.forward; 
+
+	NetworkServer.Spawn (shellInstance.gameObject);
+
+    // Change the clip to the firing clip and play it.
+    m_ShootingAudio.clip = m_FireClip;
+    m_ShootingAudio.Play ();
+
+    // Reset the launch force.  This is a precaution in case of missing button events.
+    m_CurrentLaunchForce = m_MinLaunchForce;
 }
 {% endhighlight %}
 
-### _Completed-Assets\Scripts\Managers\TankManager.cs
+3. 子弹碰撞
 
-> 将此脚本挂载到Tank预制上
+* 打开 _Completed-Assets\Scripts\Shell\ShellExplosion 脚本
+* 取消 OnTriggerEnter 函数中力的作用
 
 {% highlight C# linenos %}
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.AI;
+private void OnTriggerEnter (Collider other)
+{
+	//···
 
-public class Alli: MonoBehaviour {
+	// Add an explosion force.
+	//targetRigidbody.AddExplosionForce (m_ExplosionForce, transform.position, m_ExplosionRadius);
 
-	private NavMeshAgent man;
-	public Transform target;
+	//···
+}
+{% endhighlight %}
 
-	private int count = 0;
-	// Use this for initialization
-	void Start () {
-		man = gameObject.GetComponent<NavMeshAgent> ();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		if (target == null)
-			return;
-		// 设置寻路的目的地
-		man.SetDestination (target.position);
-        // 判断当前位置与目的地距离
-		if (Vector3.Distance(target.position, transform.position) > 20)
-			return;
-		// 设置开炮间隔
-		count = count + 1;
-		if (count < 10)
-			return;
-		count = 0;
-        // 通过射线判断目标是否在自己的前方（在前方炮弹才有可能射中）
-		Ray ray = new Ray(transform.position, target.position);
-		RaycastHit hit;
-		if (Physics.Raycast (transform.position, transform.forward, out hit)) {
-			Debug.Log (hit.transform.gameObject.name);
-			if (!(hit.transform.gameObject.name == target.gameObject.name))
-				return;
-		}
-        // 发射炮弹，参考TankShooting中的写法（注意Complete命名空间）
-		Complete.TankShooting mono = gameObject.GetComponent<Complete.TankShooting> ();
-		Rigidbody shellInstance =
-			Instantiate (mono.m_Shell, mono.m_FireTransform.position, mono.m_FireTransform.rotation) as Rigidbody;
+---
 
-		shellInstance.velocity = mono.m_MinLaunchForce * mono.m_FireTransform.forward;
-		mono.m_ShootingAudio.clip = mono.m_FireClip;
-		mono.m_ShootingAudio.Play ();
+### 玩家状态同步
+
+1. 玩家状态（非联网生命值）
+
+* 打开 _Completed-Assets\Scripts\Tank\TankHealth 脚本
+* 将 SetHealthUI 函数改为 void OnGUI 函数，取消所有 SetHealthUI 函数的调用
+
+{% highlight C# linenos %}
+void OnGUI()
+{
+    // Set the slider's value appropriately.
+    m_Slider.value = m_CurrentHealth;
+
+    // Interpolate the color of the bar between the choosen colours based on the current percentage of the starting health.
+    m_FillImage.color = Color.Lerp (m_ZeroHealthColor, m_FullHealthColor, m_CurrentHealth / m_StartingHealth);
+}
+{% endhighlight %}
+
+2. 玩家状态（网络健康）
+
+* 打开 _Completed-Assets\Scripts\Tank\TankHealth 脚本
+* 将脚本更改为 NetworkBehaviour
+* [SyncVar] 指令生命值属性具有 “服务器权限”
+* 将 isServer 检查添加到 TakeDamage 中，所以它只会应用在服务器上
+
+{% highlight C# linenos %}
+public class TankHealth : NetworkBehaviour
+{
+	//···
+
+	[SyncVar]
+	private float m_CurrentHealth;                      // How much health the tank currently has.
+
+	//···
+}
+{% endhighlight %}
+
+3. 死亡和重生
+
+* 打开 _Completed-Assets\Scripts\Tank\TankHealth 脚本
+* 添加一个 [ClientRpc] 指示 RpcRespawn 函数具有 “本地权限”。有关更多信息，请参阅 Networked Actions。
+* 当生命值达到零时，调用服务器上的 RpcRespawn 函数操作，[ClientRpc] 指令在所有客户端执行该函数。
+
+{% highlight C# linenos %}
+[ClientRpc]
+void RpcRespawn()
+{
+	if (isLocalPlayer) {
+		transform.position = Vector3.zero;
 	}
 }
 {% endhighlight %}
+
+### 运行
+
+> 取消 GameManager, CameraControl 脚本
 
 ---
 
 ## 参考资料
-* [Unity 基础寻路-NavMesh](https://blog.csdn.net/czhenya/article/details/77603388)
+* [第十三章、多人游戏与网络](https://pmlpml.github.io/unity3d-learning/13-Multiplayer-and-Networking)
 
-* [Unity 3D 博客汇总](https://blog.csdn.net/pmlpml/article/details/72236930)
+* [Multiplayer and Networking](https://docs.unity3d.com/Manual/UNet.html)
