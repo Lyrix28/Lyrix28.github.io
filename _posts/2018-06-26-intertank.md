@@ -1,5 +1,8 @@
 ---
-layout: splash
+layout: post
+classes:
+  - landing
+  - dark-theme
 title:  "多人游戏与网络"
 date:   2018-06-26 14:06:05
 categories: 3D游戏编程与设计
